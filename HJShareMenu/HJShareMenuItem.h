@@ -14,4 +14,6 @@
 
 @property (nonatomic, copy) NSString *menuItemTitle;
 
+@property (nonatomic, copy) void (^action)();
+
 @end

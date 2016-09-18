@@ -55,7 +55,9 @@
     HJShareMenuItem *twitter = [[HJShareMenuItem alloc] init];
     twitter.menuItemTitle  = kHJShareMenuLocalizedStrings(@"Twitter");
     twitter.menuItemImage = [UIImage imageWithContentsOfFile:[kHJShareMenuBundlePath stringByAppendingPathComponent:@"shareTwitter.png"]];
-    
+    twitter.action = ^{
+        NSLog(@"twitter tapped");
+    };
     /*custom Menu Item*/
     
     HJShareMenuItem *custom1 = [[HJShareMenuItem alloc] init];

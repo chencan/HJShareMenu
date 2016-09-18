@@ -73,8 +73,8 @@ static NSString *const kShareMenuItemCellIdentifier = @"kShareMenuItemCellIdenti
     
     HJShareMenuItemCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kShareMenuItemCellIdentifier forIndexPath:indexPath];
     
-    [cell.menuItemButton setImage:menuItem.menuItemImage forState:UIControlStateNormal];
-    cell.menuLabel.text  = menuItem.menuItemTitle;
+    cell.menuItem = menuItem;
+    
     cell.delegate = self;
     
     return cell;

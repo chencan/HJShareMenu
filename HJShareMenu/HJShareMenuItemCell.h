@@ -10,6 +10,7 @@
 
 
 @class HJShareMenuItemCell;
+@class HJShareMenuItem;
 
 @protocol HJShareMenuItemCellDelegate <NSObject>
 
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) UIButton *menuItemButton;
 @property (nonatomic, strong) UILabel     *menuLabel;
+@property (nonatomic, strong) HJShareMenuItem *menuItem;
 
 
 @end

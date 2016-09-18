@@ -7,7 +7,7 @@
 //
 
 #import "HJShareMenuItemCell.h"
-
+#import "HJShareMenuItem.h"
 
 static const  CGFloat kMenuLabelMarginTop  = 8.0;
 static const CGFloat kMenuLabelFontSize    = 12.0;
@@ -83,6 +83,9 @@ static const CGFloat kMenuItemButtonHeight = 60.0;
 #pragma mark - Action
 - (void)menuItemButtonDidCick:(id)sender
 {
+    if (self.menuItem.action) {
+        self.menuItem.action();
+    }
     if(self.delegate && [self.delegate respondsToSelector:@selector(menuItemCellDidTap:)])
     {
         [self.delegate menuItemCellDidTap:self];
@@ -117,5 +120,12 @@ static const CGFloat kMenuItemButtonHeight = 60.0;
         [self.contentView addSubview:_menuLabel];
     }
     return _menuLabel;
+}
+
+- (void)setMenuItem:(HJShareMenuItem *)menuItem {
+    _menuItem = menuItem;
+    
+    [self.menuItemButton setImage:menuItem.menuItemImage forState:UIControlStateNormal];
+    self.menuLabel.text  = menuItem.menuItemTitle;
 }
 @end
