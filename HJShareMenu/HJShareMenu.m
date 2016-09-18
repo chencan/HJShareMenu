@@ -24,7 +24,6 @@ static const NSInteger kBackgroundViewColor       = 0x000000;
 static const CGFloat kAnimationDuration           = 0.4;
 static const CGFloat kBackgroundViewAlpha         = 0.6;
 static const  NSInteger kShareMenuBackgroundColor = 0xe1e3e4;
-static const NSInteger kSeperateLineColor         = 0xc2c2c2;
 static const CGFloat   kCancelButtonFontSize      = 15.0;
 static const NSInteger kCancelButtonTextColor     = 0x323232;
 static const CGFloat kCancelButtonHeight          = 45.0;
@@ -43,8 +42,6 @@ static const CGFloat kSpacing                     = 5.0;
 @property (nonatomic, strong) UIButton *cancelButton;
 
 @property (nonatomic, strong) UIControl   *backgroundView;
-
-@property (nonatomic, strong) UIView   *seperateLine;
 
 @property (nonatomic, assign) HJShareMenuMode menuMode;
 
@@ -174,15 +171,6 @@ static const CGFloat kSpacing                     = 5.0;
                                                     multiplier:1
                                                       constant:0]];
     
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.seperateLine
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.cancelButton
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                 multiplier:1
-                                                                   constant:0]];
-    
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
@@ -198,6 +186,8 @@ static const CGFloat kSpacing                     = 5.0;
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1
                                                       constant:0]];
+    
+     [self bringSubviewToFront:self.pageControl];
     
 }
 
@@ -300,20 +290,6 @@ static const CGFloat kSpacing                     = 5.0;
         [self addSubview:_pageControl];
     }
     return _pageControl;
-}
-
-
-- (UIView *)seperateLine
-{
-    if(!_seperateLine) {
-        _seperateLine = [[UIView alloc] init];
-        _seperateLine.backgroundColor = [UIColor colorWithRed:((float)((kSeperateLineColor & 0xFF0000) >> 16)) / 255.0
-                                                        green:((float)((kSeperateLineColor & 0xFF00) >> 8)) / 255.0
-                                                         blue:((float)(kSeperateLineColor & 0xFF)) / 255.0 alpha:1];
-        _seperateLine.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:_seperateLine];
-    }
-    return _seperateLine;
 }
 
 - (UICollectionView *)menuCollectionView
