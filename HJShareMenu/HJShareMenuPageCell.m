@@ -103,6 +103,7 @@ static NSString *const kShareMenuItemCellIdentifier = @"kShareMenuItemCellIdenti
                                                    5,
                                                    0);
         flowLayout.itemSize = CGSizeMake(100.0, 100.0);
+        flowLayout.minimumInteritemSpacing = 0.0;
         _pageCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         _pageCollectionView.backgroundColor = [UIColor clearColor];
         _pageCollectionView.delegate = self;

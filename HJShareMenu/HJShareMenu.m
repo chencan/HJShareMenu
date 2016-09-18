@@ -19,7 +19,6 @@ typedef enum : NSUInteger {
     MultiPageMode,
 } HJShareMenuMode;
 
-#define kSeperateLineThick  (1/[UIScreen mainScreen].scale)
 static NSString * const kShareMenuPageCellIdentifier = @"kHJShareMenuPageCellIdentifier";
 static const NSInteger kBackgroundViewColor       = 0x000000;
 static const CGFloat kAnimationDuration           = 0.4;
@@ -29,7 +28,7 @@ static const NSInteger kSeperateLineColor         = 0xc2c2c2;
 static const CGFloat   kCancelButtonFontSize      = 15.0;
 static const NSInteger kCancelButtonTextColor     = 0x323232;
 static const CGFloat kCancelButtonHeight          = 45.0;
-
+static const CGFloat kSpacing                     = 5.0;
 
 
 @interface HJShareMenu ()<  UICollectionViewDataSource,
@@ -79,9 +78,7 @@ static const CGFloat kCancelButtonHeight          = 45.0;
         [self buildLayout];
         
         //设置样式
-        self.backgroundColor = [UIColor colorWithRed:((float)((kShareMenuBackgroundColor & 0xFF0000) >> 16)) / 255.0
-                        green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
-                         blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -104,19 +101,24 @@ static const CGFloat kCancelButtonHeight          = 45.0;
     self.frame  = CGRectMake(0,
                              keyWindow.frame.size.height,
                              keyWindow.frame.size.width,
-                             self.pageViewHeight + kCancelButtonHeight);
-    //end frame
-    CGRect toFrame =  CGRectMake(0,
-                                 keyWindow.frame.size.height - (self.pageViewHeight + kCancelButtonHeight),
-                                 keyWindow.frame.size.width,
-                                 self.pageViewHeight + kCancelButtonHeight);
+                             self.pageViewHeight + kCancelButtonHeight + kSpacing * 2);
     
-    
-    [UIView animateWithDuration:kAnimationDuration animations:^{
-        self.frame  = toFrame;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.frame = CGRectMake(0,
+                                keyWindow.frame.size.height - self.frame.size.height - kSpacing,
+                                keyWindow.frame.size.width,
+                                self.frame.size.height);
         self.backgroundView.backgroundColor = [UIColor colorWithRed:((float)((kBackgroundViewColor & 0xFF0000) >> 16)) / 255.0
                                                               green:((float)((kBackgroundViewColor & 0xFF00) >> 8)) / 255.0
                                                                blue:((float)(kBackgroundViewColor & 0xFF)) / 255.0 alpha:kBackgroundViewAlpha];
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.2 animations:^{
+            //end frame
+            self.frame = CGRectMake(0,
+                                    keyWindow.frame.size.height - self.frame.size.height,
+                                    keyWindow.frame.size.width,
+                                    self.frame.size.height);
+        }];
     }];
 }
 
@@ -126,7 +128,7 @@ static const CGFloat kCancelButtonHeight          = 45.0;
     CGRect toFrame =  CGRectMake(0,
                                  keyWindow.frame.size.height,
                                  keyWindow.frame.size.width,
-                                 self.pageViewHeight + kCancelButtonHeight);
+                                 self.frame.size.height);
     
     [UIView animateWithDuration:kAnimationDuration
                      animations:^{
@@ -146,21 +148,19 @@ static const CGFloat kCancelButtonHeight          = 45.0;
 {
     NSDictionary *viewsDic = @{@"_menuCollectionView":self.menuCollectionView,
                                @"self":self,
-                               @"_seperateLine":self.seperateLine,
                                @"_cancelButton":self.cancelButton,
                                @"_pageControl":self.pageControl};
     
-    NSDictionary *metrics  = @{@"menuCollectionViewHeight":[NSNumber numberWithDouble:self.pageViewHeight-kSeperateLineThick],
-                               @"seperateLineThick":[NSNumber numberWithDouble:kSeperateLineThick],
+    NSDictionary *metrics  = @{@"menuCollectionViewHeight":[NSNumber numberWithDouble:self.pageViewHeight],
                                @"cancelButtonHeight":[NSNumber numberWithDouble:kCancelButtonHeight]};
     
-    NSString *vflH = @"H:|-0-[_menuCollectionView(==_cancelButton)]-0-|";
+    NSString *vflH = @"H:|-5-[_menuCollectionView(==_cancelButton)]-5-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflH
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDic]];
     
-    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-0-[_seperateLine(seperateLineThick)]-0-[_cancelButton(cancelButtonHeight)]-0-|";
+    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-5-[_cancelButton(cancelButtonHeight)]-5-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflV
                                                                  options:0
                                                                  metrics:metrics
@@ -230,9 +230,7 @@ static const CGFloat kCancelButtonHeight          = 45.0;
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    
-    return CGSizeMake(keyWindow.frame.size.width, self.menuCollectionView.frame.size.height);
+    return CGSizeMake(collectionView.frame.size.width, collectionView.frame.size.height);
 }
 
 
@@ -332,7 +330,11 @@ static const CGFloat kCancelButtonHeight          = 45.0;
         _menuCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                                  collectionViewLayout:flowLayout];
         _menuCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-        _menuCollectionView.backgroundColor  = [UIColor clearColor];
+        _menuCollectionView.backgroundColor  = [UIColor colorWithRed:((float)((kShareMenuBackgroundColor & 0xFF0000) >> 16)) / 255.0
+                                                               green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
+                                                                blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
+        
+        _menuCollectionView.layer.cornerRadius = 5;
         _menuCollectionView.bounces = NO;
         _menuCollectionView.pagingEnabled = YES;
         _menuCollectionView.showsHorizontalScrollIndicator = NO;
@@ -353,6 +355,10 @@ static const CGFloat kCancelButtonHeight          = 45.0;
         [_cancelButton setTitleColor:[UIColor colorWithRed:((float)((kCancelButtonTextColor & 0xFF0000) >> 16)) / 255.0
                                                      green:((float)((kCancelButtonTextColor & 0xFF00) >> 8)) / 255.0
                                                       blue:((float)(kCancelButtonTextColor & 0xFF)) / 255.0 alpha:1] forState:UIControlStateNormal];
+        _cancelButton.backgroundColor  = [UIColor colorWithRed:((float)((kShareMenuBackgroundColor & 0xFF0000) >> 16)) / 255.0
+                                                         green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
+                                                          blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
+        _cancelButton.layer.cornerRadius = 5;
         _cancelButton.titleLabel.font  = [UIFont systemFontOfSize:kCancelButtonFontSize];
         _cancelButton.translatesAutoresizingMaskIntoConstraints  = NO;
         [_cancelButton addTarget:self action:@selector(cancelButtonDidCick:) forControlEvents:UIControlEventTouchUpInside];
