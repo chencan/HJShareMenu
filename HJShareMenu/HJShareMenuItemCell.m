@@ -83,12 +83,12 @@ static const CGFloat kMenuItemButtonHeight = 60.0;
 #pragma mark - Action
 - (void)menuItemButtonDidCick:(id)sender
 {
-    if (self.menuItem.action) {
-        self.menuItem.action();
-    }
     if(self.delegate && [self.delegate respondsToSelector:@selector(menuItemCellDidTap:)])
     {
         [self.delegate menuItemCellDidTap:self];
+    }
+    if (self.menuItem.action) {
+        self.menuItem.action();
     }
 }
 
