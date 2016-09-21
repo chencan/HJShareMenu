@@ -141,7 +141,7 @@ static const CGFloat kSpacing                     = 5.0;
 }
 
 
-#pragma mark  - Life Cycle
+#pragma mark  - Pirvate
 - (void)buildLayout
 {
     NSDictionary *viewsDic = @{@"_menuCollectionView":self.menuCollectionView,
@@ -192,6 +192,15 @@ static const CGFloat kSpacing                     = 5.0;
     
 }
 
+- (void)cancelled {
+    [self hideMenu];
+    
+    if(self.delegate && [self.delegate respondsToSelector:@selector(hj_shareMenuCancelled:)])
+    {
+        [self.delegate hj_shareMenuCancelled:self];
+    }
+    
+}
 
 
 #pragma mark - UICollectionViewDataSource
@@ -254,13 +263,13 @@ static const CGFloat kSpacing                     = 5.0;
 #pragma makr - Action
 - (void)backgroundViewDidTap:(id)sender
 {
-    [self hideMenu];
+    [self cancelled];
 }
 
 
 - (void)cancelButtonDidCick:(id)sender
 {
-    [self hideMenu];
+    [self cancelled];
 }
 
 

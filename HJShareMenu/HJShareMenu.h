@@ -22,6 +22,7 @@
 @protocol HJShareMenuDelegate <NSObject>
 
 - (void)hj_shareMenu:(HJShareMenu *)shareMenu selectedAtIndex:(NSInteger)index;
+- (void)hj_shareMenuCancelled:(HJShareMenu *)shareMenu;
 
 @end
 
