@@ -41,7 +41,7 @@ static const CGFloat kSpacing                     = 5.0;
 
 @property (nonatomic, strong) UIButton *cancelButton;
 
-@property (nonatomic, strong) UIControl   *backgroundView;
+@property (nonatomic, weak) UIControl   *backgroundView;
 
 @property (nonatomic, assign) HJShareMenuMode menuMode;
 
@@ -85,7 +85,8 @@ static const CGFloat kSpacing                     = 5.0;
 {
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     
-    self.backgroundView  = [[UIControl alloc] initWithFrame:keyWindow.frame];
+    UIView *backgroundView = [[UIControl alloc] initWithFrame:keyWindow.frame];
+    self.backgroundView  = backgroundView;
     [self.backgroundView addSubview:self];
     self.backgroundView.backgroundColor = [UIColor colorWithRed:((float)((kBackgroundViewColor & 0xFF0000) >> 16)) / 255.0
                                                           green:((float)((kBackgroundViewColor & 0xFF00) >> 8)) / 255.0
