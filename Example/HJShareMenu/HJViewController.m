@@ -105,6 +105,8 @@
     NSLog(@"选中：%ld",(long)index);
     
 }
-
+- (void)hj_shareMenuCancelled:(HJShareMenu *)shareMenu {
+    NSLog(@"Cancelled");
+}
 
 @end

@@ -206,7 +206,8 @@ static const CGFloat kSpacing                     = 5.0;
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return (self.menuItems.count / 6)+1;
+    int count = self.menuItems.count;
+    return count == 0 ? 0 : ((self.menuItems.count -1) / 6) + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
