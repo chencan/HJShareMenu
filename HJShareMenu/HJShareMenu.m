@@ -27,7 +27,7 @@ static const  NSInteger kShareMenuBackgroundColor = 0xe1e3e4;
 static const CGFloat   kCancelButtonFontSize      = 15.0;
 static const NSInteger kCancelButtonTextColor     = 0x323232;
 static const CGFloat kCancelButtonHeight          = 45.0;
-static const CGFloat kSpacing                     = 5.0;
+static const CGFloat kSpacing                     = 8;
 
 
 @interface HJShareMenu ()<  UICollectionViewDataSource,
@@ -152,13 +152,13 @@ static const CGFloat kSpacing                     = 5.0;
     NSDictionary *metrics  = @{@"menuCollectionViewHeight":[NSNumber numberWithDouble:self.pageViewHeight],
                                @"cancelButtonHeight":[NSNumber numberWithDouble:kCancelButtonHeight]};
     
-    NSString *vflH = @"H:|-5-[_menuCollectionView(==_cancelButton)]-5-|";
+    NSString *vflH = @"H:|-8-[_menuCollectionView(==_cancelButton)]-8-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflH
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDic]];
     
-    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-5-[_cancelButton(cancelButtonHeight)]-5-|";
+    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-8-[_cancelButton(cancelButtonHeight)]-8-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflV
                                                                  options:0
                                                                  metrics:metrics
@@ -321,7 +321,7 @@ static const CGFloat kSpacing                     = 5.0;
                                                                green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
                                                                 blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
         
-        _menuCollectionView.layer.cornerRadius = 5;
+        _menuCollectionView.layer.cornerRadius = 15;
         _menuCollectionView.bounces = NO;
         _menuCollectionView.pagingEnabled = YES;
         _menuCollectionView.showsHorizontalScrollIndicator = NO;
@@ -345,7 +345,7 @@ static const CGFloat kSpacing                     = 5.0;
         _cancelButton.backgroundColor  = [UIColor colorWithRed:((float)((kShareMenuBackgroundColor & 0xFF0000) >> 16)) / 255.0
                                                          green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
                                                           blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
-        _cancelButton.layer.cornerRadius = 5;
+        _cancelButton.layer.cornerRadius = 15;
         _cancelButton.titleLabel.font  = [UIFont systemFontOfSize:kCancelButtonFontSize];
         _cancelButton.translatesAutoresizingMaskIntoConstraints  = NO;
         [_cancelButton addTarget:self action:@selector(cancelButtonDidCick:) forControlEvents:UIControlEventTouchUpInside];
