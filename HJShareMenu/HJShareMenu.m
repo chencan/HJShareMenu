@@ -24,9 +24,9 @@ static const NSInteger kBackgroundViewColor       = 0x000000;
 static const CGFloat kAnimationDuration           = 0.4;
 static const CGFloat kBackgroundViewAlpha         = 0.6;
 static const  NSInteger kShareMenuBackgroundColor = 0xe1e3e4;
-static const CGFloat   kCancelButtonFontSize      = 15.0;
+static const CGFloat   kCancelButtonFontSize      = 20.0;
 static const NSInteger kCancelButtonTextColor     = 0x323232;
-static const CGFloat kCancelButtonHeight          = 45.0;
+static const CGFloat kCancelButtonHeight          = 56.0;
 static const CGFloat kSpacing                     = 8;
 
 
@@ -338,7 +338,7 @@ static const CGFloat kSpacing                     = 8;
     if (!_cancelButton) {
         
         _cancelButton  = [[UIButton alloc] init];
-        [_cancelButton setTitle:kHJShareMenuLocalizedStrings(@"cancel") forState:UIControlStateNormal];
+        [_cancelButton setTitle:kHJShareMenuLocalizedStrings(@"Cancel") forState:UIControlStateNormal];
         [_cancelButton setTitleColor:[UIColor colorWithRed:((float)((kCancelButtonTextColor & 0xFF0000) >> 16)) / 255.0
                                                      green:((float)((kCancelButtonTextColor & 0xFF00) >> 8)) / 255.0
                                                       blue:((float)(kCancelButtonTextColor & 0xFF)) / 255.0 alpha:1] forState:UIControlStateNormal];
@@ -346,7 +346,8 @@ static const CGFloat kSpacing                     = 8;
                                                          green:((float)((kShareMenuBackgroundColor & 0xFF00) >> 8)) / 255.0
                                                           blue:((float)(kShareMenuBackgroundColor & 0xFF)) / 255.0 alpha:1];
         _cancelButton.layer.cornerRadius = 15;
-        _cancelButton.titleLabel.font  = [UIFont systemFontOfSize:kCancelButtonFontSize];
+        _cancelButton.titleLabel.font  = [UIFont boldSystemFontOfSize:kCancelButtonFontSize];
+        [_cancelButton setTitleColor:[UIColor colorWithRed:0.0 / 255.0 green:112.0 / 255.0 blue:1 alpha:1] forState:UIControlStateNormal];//0 112 249
         _cancelButton.translatesAutoresizingMaskIntoConstraints  = NO;
         [_cancelButton addTarget:self action:@selector(cancelButtonDidCick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_cancelButton];
