@@ -10,7 +10,7 @@
 
 //cell
 #import "HJShareMenuPageCell.h"
-
+#import "HJShareMenuItemCell.h"
 
 
 typedef enum : NSUInteger {
@@ -27,7 +27,7 @@ static const  NSInteger kShareMenuBackgroundColor = 0xe1e3e4;
 static const CGFloat   kCancelButtonFontSize      = 20.0;
 static const NSInteger kCancelButtonTextColor     = 0x323232;
 static const CGFloat kCancelButtonHeight          = 56.0;
-static const CGFloat kSpacing                     = 8;
+static const CGFloat kSpacing                     = 7;
 
 
 @interface HJShareMenu ()<  UICollectionViewDataSource,
@@ -62,10 +62,10 @@ static const CGFloat kSpacing                     = 8;
     if (self) {
         //设置数据
         self.menuItems  = items;
-        if (self.menuItems.count  < 4) {
+        if (self.menuItems.count  <= [HJShareMenu itemCountPerRow]) {
             self.menuMode  = SingleLineMode;
         }
-        else if (self.menuItems.count < 7) {
+        else if (self.menuItems.count <= [HJShareMenu itemCountPerPage]) {
             self.menuMode = SinglePageMode;
         }
         else {
@@ -152,13 +152,13 @@ static const CGFloat kSpacing                     = 8;
     NSDictionary *metrics  = @{@"menuCollectionViewHeight":[NSNumber numberWithDouble:self.pageViewHeight],
                                @"cancelButtonHeight":[NSNumber numberWithDouble:kCancelButtonHeight]};
     
-    NSString *vflH = @"H:|-8-[_menuCollectionView(==_cancelButton)]-8-|";
+    NSString *vflH = @"H:|-7-[_menuCollectionView(==_cancelButton)]-7-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflH
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDic]];
     
-    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-8-[_cancelButton(cancelButtonHeight)]-8-|";
+    NSString *vflV = @"V:|-0-[_menuCollectionView(menuCollectionViewHeight)]-7-[_cancelButton(cancelButtonHeight)]-7-|";
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:vflV
                                                                  options:0
                                                                  metrics:metrics
@@ -202,12 +202,28 @@ static const CGFloat kSpacing                     = 8;
     
 }
 
++ (NSUInteger)itemCountPerRow {
+    static NSUInteger itemCountPerRow = 0;
+    if (itemCountPerRow == 0) {
+        UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+        itemCountPerRow = (keyWindow.bounds.size.width - 2 * kSpacing) / kMenuItemWidth;
+    }
+    return itemCountPerRow;
+}
+
++ (NSUInteger)itemCountPerPage {
+    static NSUInteger itemCountPerPage = 0;
+    if (itemCountPerPage == 0) {
+        itemCountPerPage = 2 * [self itemCountPerRow];
+    }
+    return itemCountPerPage;
+}
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     int count = self.menuItems.count;
-    return count == 0 ? 0 : ((self.menuItems.count -1) / 6) + 1;
+    return count == 0 ? 0 : ((self.menuItems.count -1) / [self.class itemCountPerPage]) + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -215,8 +231,8 @@ static const CGFloat kSpacing                     = 8;
     HJShareMenuPageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kShareMenuPageCellIdentifier forIndexPath:indexPath];
     
     
-    NSInteger loc = indexPath.row*6;
-    NSInteger len = (loc + 6)>self.menuItems.count?self.menuItems.count - loc:6;
+    NSInteger loc = indexPath.row*[self.class itemCountPerPage];
+    NSInteger len = (loc + [self.class itemCountPerPage])>self.menuItems.count?self.menuItems.count - loc:[self.class itemCountPerPage];
     cell.menuPageItems = [self.menuItems subarrayWithRange: NSMakeRange(loc , len)];
     cell.delegate  = self;
     
@@ -279,7 +295,7 @@ static const CGFloat kSpacing                     = 8;
 {
     _menuMode = menuMode;
     if (menuMode == SingleLineMode) {
-        self.pageViewHeight = 130.0;
+        self.pageViewHeight = 30 + kMenuItemWidth;
     }
     else {
         self.pageViewHeight = 258.0;

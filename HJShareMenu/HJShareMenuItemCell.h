@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
+extern const CGFloat kMenuItemWidth;
+extern const CGFloat kMenuItemHeight;
+
 @class HJShareMenuItemCell;
 @class HJShareMenuItem;
 

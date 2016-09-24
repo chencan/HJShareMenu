@@ -15,6 +15,8 @@ static const NSInteger kMenuLabelTextColor = 0x646464;
 
 static const CGFloat kMenuItemButtonHeight = 60.0;
 
+const CGFloat kMenuItemWidth = 100.0;
+const CGFloat kMenuItemHeight = 100.0;
 
 @implementation HJShareMenuItemCell
 
